@@ -60,7 +60,7 @@ default client may not exist.
 Usage:
 
 ```
-import context
+import "context"
 
 ctx := context.TODO()
 httpClient := urlfetch.Client(ctx)
