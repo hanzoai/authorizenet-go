@@ -52,6 +52,24 @@ import auth "github.com/hunterlong/authorizecim"
 ```
 ***
 
+## Set HTTP Client
+This library allows you to set your own HTTP client for talking to the
+Authorize.net API. This is useful for working in Appengine contexts where a
+default client may not exist.
+
+Usage:
+
+```
+httpClient := urlfetch.Client(ctx)
+
+httpClient.Transport = &urlfetch.Transport{
+    Context: ctx,
+    AllowInvalidServerCertificate: appengine.IsDevAppServer(),
+}
+
+AuthorizeCIM.SetHTTPClient(httpClient)
+```
+
 ## Set Authorize.net API Keys
 You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
 ```go
