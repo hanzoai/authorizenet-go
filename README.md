@@ -60,6 +60,9 @@ default client may not exist.
 Usage:
 
 ```
+import context
+
+ctx := context.TODO()
 httpClient := urlfetch.Client(ctx)
 
 httpClient.Transport = &urlfetch.Transport{
