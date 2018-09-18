@@ -1,4 +1,4 @@
-package AuthorizeCIM
+package authorizenet
 
 func (transx TransactionResponse) TransactionID() string {
 	return transx.Response.TransID

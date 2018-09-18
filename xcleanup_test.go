@@ -1,4 +1,4 @@
-package AuthorizeCIM
+package authorizenet
 
 import (
 	"math/rand"
