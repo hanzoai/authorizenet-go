@@ -1,4 +1,4 @@
-package AuthorizeCIM
+package authorizenet
 
 import (
 	"bytes"
@@ -10,33 +10,34 @@ import (
 
 const defaultHTTPTimeout = 80 * time.Second
 
-var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
-var apiName *string
-var apiKey *string
-var testMode string
-var showLogs bool = true
-var connected bool = false
-var httpClient = &http.Client{Timeout: defaultHTTPTimeout}
+type Client struct {
+	APIName   string
+	APIKey    string
+	Endpoint  string
+	Transport *http.RoundTripper
+	Live      bool
+	Connected bool
+	Verbose   bool
+}
 
-func SetAPIInfo(name string, key string, mode string) {
-	apiKey = &key
-	apiName = &name
-	if mode == "live" {
-		showLogs = false
-		testMode = "liveMode"
-		api_endpoint = "https://api.authorize.net/xml/v1/request.api"
-	} else {
-		showLogs = true
-		testMode = "testMode"
-		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
+func New(apiName string, apiKey string, testMode bool) *Client {
+	endpoint := "https://apitest.authorize.net/xml/v1/request.api"
+	mode := "testMode"
+
+	if !test {
+		endpoint = "https://api.authorize.net/xml/v1/request.api"
+		mode = "liveMode"
+	}
+
+	return &Client{
+		APIKey:    apiKey,
+		APIName:   apiName,
+		Endpoint:  endpoint,
+		Transport: &http.Client{Timeout: defaultHTTPTimeout},
 	}
 }
 
-func SetHTTPClient(client *http.Client) {
-	httpClient = client;
-}
-
-func IsConnected() (bool, error) {
+func (c *Client) IsConnected() (bool, error) {
 	info, err := GetMerchantDetails()
 	if err != nil {
 		return false, err
@@ -47,7 +48,7 @@ func IsConnected() (bool, error) {
 	return false, err
 }
 
-func GetAuthentication() MerchantAuthentication {
+func (c *Client) GetAuthentication() MerchantAuthentication {
 	auth := MerchantAuthentication{
 		Name:           apiName,
 		TransactionKey: apiKey,
@@ -55,7 +56,7 @@ func GetAuthentication() MerchantAuthentication {
 	return auth
 }
 
-func SendRequest(input []byte) ([]byte, error) {
+func (c *Client) SendRequest(input []byte) ([]byte, error) {
 	req, err := http.NewRequest("POST", api_endpoint, bytes.NewBuffer(input))
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := httpClient.Do(req)
