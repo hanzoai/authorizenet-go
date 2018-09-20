@@ -4,37 +4,37 @@ import (
 	"encoding/json"
 )
 
-func (response SubscriptionResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
+func (res SubscriptionResponse) Approved() bool {
+	if res.Messages.ResultCode == "Ok" {
 		return true
 	}
 	return false
 }
 
-func (response SubscriptionResponse) CustomerProfileId() string {
-	return response.Profile.CustomerProfileID
+func (res SubscriptionResponse) CustomerProfileId() string {
+	return res.Profile.CustomerProfileID
 }
 
-func (response SubscriptionResponse) CustomerPaymentProfileId() string {
-	return response.Profile.CustomerPaymentProfileID
+func (res SubscriptionResponse) CustomerPaymentProfileId() string {
+	return res.Profile.CustomerPaymentProfileID
 }
 
-func (response SubscriptionResponse) ErrorMessage() string {
-	return response.Messages.Message[0].Text
+func (res SubscriptionResponse) ErrorMessage() string {
+	return res.Messages.Message[0].Text
 }
 
 func (sub Subscription) Charge(c Client) (*SubscriptionResponse, error) {
-	response, err := c.SendSubscription(sub)
-	return response, err
+	res, err := c.SendSubscription(sub)
+	return res, err
 }
 
 func (sub Subscription) Update(c Client) (*SubscriptionResponse, error) {
-	response, err := c.UpdateSubscription(sub)
-	return response, err
+	res, err := c.UpdateSubscription(sub)
+	return res, err
 }
 
-func (response SubscriptionResponse) Info() string {
-	return response.Messages.Message[0].Text
+func (res SubscriptionResponse) Info() string {
+	return res.Messages.Message[0].Text
 }
 
 type UpdateSubscriptionRequest struct {
@@ -140,9 +140,9 @@ func (c Client) SendSubscription(sub Subscription) (*SubscriptionResponse, error
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat SubscriptionResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -165,9 +165,9 @@ func (c Client) UpdateSubscription(sub Subscription) (*SubscriptionResponse, err
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat SubscriptionResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -189,9 +189,9 @@ func (sub SetSubscription) Info(c Client) (*GetSubscriptionResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat GetSubscriptionResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -216,9 +216,9 @@ func (sub SetSubscription) Status(c Client) (*SubscriptionStatus, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat SubscriptionStatus
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -236,9 +236,9 @@ func (sub SetSubscription) Cancel(c Client) (*SubscriptionCancel, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat SubscriptionCancel
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -264,9 +264,9 @@ func (c Client) SubscriptionList(search string) (*GetSubscriptionList, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat GetSubscriptionList
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}

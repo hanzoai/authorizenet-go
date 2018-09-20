@@ -55,16 +55,16 @@ func TestDeleteCustomerShippingProfile(t *testing.T) {
 		ShippingID: newCustomerShippingId,
 	}
 
-	response, err := customer.DeleteShippingProfile()
+	res, err := customer.DeleteShippingProfile()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Shipping Profile was Deleted")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 }
@@ -75,16 +75,16 @@ func TestDeleteCustomerPaymentProfile(t *testing.T) {
 		PaymentID: newCustomerPaymentId,
 	}
 
-	response, err := customer.DeletePaymentProfile()
+	res, err := customer.DeletePaymentProfile()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Payment Profile was Deleted")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 }
@@ -95,16 +95,16 @@ func TestDeleteCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response, err := customer.DeleteProfile()
+	res, err := customer.DeleteProfile()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Customer was Deleted")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -116,16 +116,16 @@ func TestDeleteSecondCustomerProfile(t *testing.T) {
 		ID: newSecondCustomerProfileId,
 	}
 
-	response, err := customer.DeleteProfile()
+	res, err := customer.DeleteProfile()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Second Customer was Deleted")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -137,17 +137,17 @@ func TestDeclineTransaction(t *testing.T) {
 		RefId: heldTransactionId,
 	}
 
-	response, err := oldTransaction.Decline()
+	res, err := oldTransaction.Decline()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	if response.Approved() {
+	if res.Approved() {
 		t.Log("DECLINED the previous transasction that was on Hold. ID #", oldTransaction.RefId)
-		t.Log(response.TransactionID())
+		t.Log(res.TransactionID())
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 }

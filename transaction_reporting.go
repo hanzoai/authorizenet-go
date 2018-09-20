@@ -30,9 +30,9 @@ func (r Range) SettledBatch(c Client) (*BatchListResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat BatchListResponse
-	json.Unmarshal(response, &dat)
+	json.Unmarshal(res, &dat)
 	return &dat, err
 }
 
@@ -46,9 +46,9 @@ func (c Client) UnSettledBatch() (*UnsettledTransactionListResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat UnsettledTransactionListResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	return &dat, err
 }
 
@@ -75,9 +75,9 @@ func (r Range) Transactions(c Client) (*GetTransactionListResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat GetTransactionListResponse
-	json.Unmarshal(response, &dat)
+	json.Unmarshal(res, &dat)
 	return &dat, err
 }
 
@@ -92,9 +92,9 @@ func (r Range) Statistics(c Client) (*Statistics, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat BatchStatisticsResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	return &dat.Batch.Statistics[0], err
 }
 
@@ -108,9 +108,9 @@ func (c Client) GetMerchantDetails() (*MerchantDetailsResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat MerchantDetailsResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	return &dat, err
 }
 
@@ -125,9 +125,9 @@ func (tranx PreviousTransaction) Info(c Client) (*FullTransaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat TransactionDetailsResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	return &dat.Transaction, err
 }
 
@@ -221,9 +221,9 @@ type FullTransaction struct {
 	SubmitTimeLocal           string    `json:"submitTimeLocal"`
 	TransactionType           string    `json:"transactionType"`
 	TransactionStatus         string    `json:"transactionStatus"`
-	ResponseCode              int       `json:"responseCode"`
-	ResponseReasonCode        int       `json:"responseReasonCode"`
-	ResponseReasonDescription string    `json:"responseReasonDescription"`
+	ResponseCode              int       `json:"resCode"`
+	ResponseReasonCode        int       `json:"resReasonCode"`
+	ResponseReasonDescription string    `json:"resReasonDescription"`
 	AVSResponse               string    `json:"AVSResponse"`
 	Batch                     struct {
 		BatchID                      string    `json:"batchId"`

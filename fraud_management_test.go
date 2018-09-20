@@ -20,15 +20,15 @@ func TestApproveTransaction(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	response, err := oldTransaction.Approve()
+	res, err := oldTransaction.Approve()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		t.Log(response.ErrorMessage())
+	if res.Approved() {
+		t.Log(res.ErrorMessage())
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 	}
 }
 
@@ -38,14 +38,14 @@ func TestDeclineTransaction2(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	response, err := oldTransaction.Decline()
+	res, err := oldTransaction.Decline()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		t.Log(response.ErrorMessage())
+	if res.Approved() {
+		t.Log(res.ErrorMessage())
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 	}
 }

@@ -52,13 +52,13 @@ func TestGetTransactionDetails(t *testing.T) {
 	newTransaction := PreviousTransaction{
 		RefId: "60019493304",
 	}
-	response, err := newTransaction.Info()
+	res, err := newTransaction.Info()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
 	}
 
-	t.Log("Transaction Status: ", response.TransactionStatus, "\n")
+	t.Log("Transaction Status: ", res.TransactionStatus, "\n")
 }
 
 func TestGetUnSettledBatchList(t *testing.T) {

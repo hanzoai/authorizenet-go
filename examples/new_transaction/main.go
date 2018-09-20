@@ -40,11 +40,11 @@ func ChargeCustomer() {
 			PhoneNumber: "8885555555",
 		},
 	}
-	response := newTransaction.Charge()
+	res := newTransaction.Charge()
 
-	if response.Approved() {
-		newTransactionId = response.TransactionID()
-		fmt.Println("Transaction was Approved! #", response.TransactionID())
+	if res.Approved() {
+		newTransactionId = res.TransactionID()
+		fmt.Println("Transaction was Approved! #", res.TransactionID())
 	}
 }
 
@@ -53,8 +53,8 @@ func VoidTransaction() {
 	newTransaction := client.PreviousTransaction{
 		RefId: newTransactionId,
 	}
-	response := newTransaction.Void()
-	if response.Approved() {
+	res := newTransaction.Void()
+	if res.Approved() {
 		fmt.Println("Transaction was Voided!")
 	}
 

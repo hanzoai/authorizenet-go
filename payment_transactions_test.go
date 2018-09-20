@@ -16,18 +16,18 @@ func TestChargeCard(t *testing.T) {
 			ExpirationDate: "10/23",
 		},
 	}
-	response, err := newTransaction.Charge()
+	res, err := newTransaction.Charge()
 	if err != nil {
 		t.Fail()
 	}
-	if response.Approved() {
-		previousCharged = response.TransactionID()
-		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
+	if res.Approved() {
+		previousCharged = res.TransactionID()
+		t.Log("#", res.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
+		t.Log("AVS Result Code: ", res.AVS().avsResultCode+"\n")
+		t.Log("AVS ACVV Result Code: ", res.AVS().cavvResultCode+"\n")
+		t.Log("AVS CVV Result Code: ", res.AVS().cvvResultCode+"\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -49,20 +49,20 @@ func TestAVSDeclinedChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	response, err := newTransaction.Charge()
+	res, err := newTransaction.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.AVS().avsResultCode == "N" {
-		t.Log("#", response.TransactionID(), "AVS Transaction was DECLINED due to AVS Code. $", newTransaction.Amount, "\n")
-		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
+	if res.AVS().avsResultCode == "N" {
+		t.Log("#", res.TransactionID(), "AVS Transaction was DECLINED due to AVS Code. $", newTransaction.Amount, "\n")
+		t.Log("AVS Result Text: ", res.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", res.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", res.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", res.AVS().cvvResultCode, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
-		t.Log(response.Message(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
+		t.Log(res.Message(), "\n")
 		t.Fail()
 	}
 }
@@ -85,28 +85,28 @@ func TestAVSChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	response, err := newTransaction.Charge()
+	res, err := newTransaction.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		heldTransactionId = response.TransactionID()
+	if res.Approved() {
+		heldTransactionId = res.TransactionID()
 	}
 
-	if response.Held() {
+	if res.Held() {
 		t.Log("Transaction is being Held for Review", "\n")
 	}
 
-	if response.AVS().avsResultCode == "E" {
-		t.Log("#", response.TransactionID(), "AVS Transaction was CHARGED is now on HOLD$", newTransaction.Amount, "\n")
-		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
+	if res.AVS().avsResultCode == "E" {
+		t.Log("#", res.TransactionID(), "AVS Transaction was CHARGED is now on HOLD$", newTransaction.Amount, "\n")
+		t.Log("AVS Result Text: ", res.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", res.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", res.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", res.AVS().cvvResultCode, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
-		t.Log(response.Message(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
+		t.Log(res.Message(), "\n")
 		t.Fail()
 	}
 }
@@ -129,20 +129,20 @@ func TestDeclinedChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	response, err := newTransaction.Charge()
+	res, err := newTransaction.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
+	if res.Approved() {
 		t.Fail()
 	} else {
-		t.Log("#", response.TransactionID(), "Transaction was DECLINED!!!", "\n")
-		t.Log(response.Message(), "\n")
-		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
+		t.Log("#", res.TransactionID(), "Transaction was DECLINED!!!", "\n")
+		t.Log(res.Message(), "\n")
+		t.Log("AVS Result Text: ", res.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", res.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", res.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", res.AVS().cvvResultCode, "\n")
 	}
 }
 
@@ -154,16 +154,16 @@ func TestAuthOnlyCard(t *testing.T) {
 			ExpirationDate: "10/27",
 		},
 	}
-	response, err := newTransaction.AuthOnly()
+	res, err := newTransaction.AuthOnly()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		previousAuth = response.TransactionID()
-		t.Log("#", response.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")
+	if res.Approved() {
+		previousAuth = res.TransactionID()
+		t.Log("#", res.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -172,14 +172,14 @@ func TestCaptureAuth(t *testing.T) {
 		Amount: "49.99",
 		RefId:  previousAuth,
 	}
-	response, err := oldTransaction.Capture()
+	res, err := oldTransaction.Capture()
 	if err != nil {
 		t.Fail()
 	}
-	if response.Approved() {
-		t.Log("#", response.TransactionID(), "Transaction was CAPTURED $", oldTransaction.Amount, "\n")
+	if res.Approved() {
+		t.Log("#", res.TransactionID(), "Transaction was CAPTURED $", oldTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -192,16 +192,16 @@ func TestChargeCardChannel(t *testing.T) {
 		},
 		AuthCode: "RANDOMAUTHCODE",
 	}
-	response, err := newTransaction.Charge()
+	res, err := newTransaction.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		previousAuth = response.TransactionID()
-		t.Log("#", response.TransactionID(), "Transaction was Charged Through Channel (AuthCode) $", newTransaction.Amount, "\n")
+	if res.Approved() {
+		previousAuth = res.TransactionID()
+		t.Log("#", res.TransactionID(), "Transaction was Charged Through Channel (AuthCode) $", newTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -214,14 +214,14 @@ func TestRefundCard(t *testing.T) {
 		},
 		RefTransId: "0392482938402",
 	}
-	response, err := newTransaction.Refund()
+	res, err := newTransaction.Refund()
 	if err != nil {
 		t.Fail()
 	}
-	if response.Approved() {
-		t.Log("#", response.TransactionID(), "Transaction was REFUNDED $", newTransaction.Amount, "\n")
+	if res.Approved() {
+		t.Log("#", res.TransactionID(), "Transaction was REFUNDED $", newTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -229,14 +229,14 @@ func TestVoidCard(t *testing.T) {
 	newTransaction := PreviousTransaction{
 		RefId: previousCharged,
 	}
-	response, err := newTransaction.Void()
+	res, err := newTransaction.Void()
 	if err != nil {
 		t.Fail()
 	}
-	if response.Approved() {
-		t.Log("#", response.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
+	if res.Approved() {
+		t.Log("#", res.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }
 
@@ -254,14 +254,14 @@ func TestChargeCustomerProfile(t *testing.T) {
 		Amount: "35.00",
 	}
 
-	response, err := newTransaction.ChargeProfile(customer)
+	res, err := newTransaction.ChargeProfile(customer)
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		t.Log("#", response.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
+	if res.Approved() {
+		t.Log("#", res.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 }

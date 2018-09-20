@@ -81,30 +81,30 @@ func (c *Client) SetHTTPClient(client *http.Client) {
 }
 
 func (r AVS) Text() string {
-	var response string
+	var res string
 	switch r.avsResultCode {
 	case "E":
-		response = "AVS data provided is invalid or AVS is not allowed for the card type that was used."
+		res = "AVS data provided is invalid or AVS is not allowed for the card type that was used."
 	case "R":
-		response = "The AVS system was unavailable at the time of processing."
+		res = "The AVS system was unavailable at the time of processing."
 	case "G":
-		response = "The card issuing bank is of non-U.S. origin and does not support AVS"
+		res = "The card issuing bank is of non-U.S. origin and does not support AVS"
 	case "U":
-		response = "The address information for the cardholder is unavailable."
+		res = "The address information for the cardholder is unavailable."
 	case "S":
-		response = "The U.S. card issuing bank does not support AVS."
+		res = "The U.S. card issuing bank does not support AVS."
 	case "N":
-		response = "Address: No Match ZIP Code: No Match"
+		res = "Address: No Match ZIP Code: No Match"
 	case "A":
-		response = "Address: Match ZIP Code: No Match"
+		res = "Address: Match ZIP Code: No Match"
 	case "Z":
-		response = "Address: No Match ZIP Code: Match"
+		res = "Address: No Match ZIP Code: Match"
 	case "W":
-		response = "Address: No Match ZIP Code: Matched 9 digits"
+		res = "Address: No Match ZIP Code: Matched 9 digits"
 	case "X":
-		response = "Address: Match ZIP Code: Matched 9 digits"
+		res = "Address: Match ZIP Code: Matched 9 digits"
 	case "Y":
-		response = "Address: Match ZIP: Matched first 5 digits"
+		res = "Address: Match ZIP: Matched first 5 digits"
 	}
-	return response
+	return res
 }

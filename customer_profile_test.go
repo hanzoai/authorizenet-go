@@ -51,17 +51,17 @@ func TestCreateCustomerProfile(t *testing.T) {
 		},
 	}
 
-	response, err := customer.CreateProfile()
+	res, err := customer.CreateProfile()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
-		newCustomerProfileId = response.CustomerProfileID
-		t.Log("New Customer Profile Created #", response.CustomerProfileID)
+	if res.Ok() {
+		newCustomerProfileId = res.CustomerProfileID
+		t.Log("New Customer Profile Created #", res.CustomerProfileID)
 	} else {
 		t.Fail()
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 	}
 
 }
@@ -89,15 +89,15 @@ func TestUpdateCustomerProfile(t *testing.T) {
 		Email:              "info@updatedemail.com",
 	}
 
-	response, err := customer.UpdateProfile()
+	res, err := customer.UpdateProfile()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Customer Profile was Updated")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -126,16 +126,16 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 		},
 	}
 
-	response, err := paymentProfile.Add()
+	res, err := paymentProfile.Add()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
-		newCustomerPaymentId = response.CustomerPaymentProfileID
-		t.Log("Created new Payment Profile #", response.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
+	if res.Ok() {
+		newCustomerPaymentId = res.CustomerPaymentProfileID
+		t.Log("Created new Payment Profile #", res.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -147,12 +147,12 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response, err := customer.Info()
+	res, err := customer.Info()
 	if err != nil {
 		t.Fail()
 	}
 
-	paymentProfiles := response.PaymentProfiles()
+	paymentProfiles := res.PaymentProfiles()
 
 	t.Log("Customer Payment Profiles", paymentProfiles)
 
@@ -179,15 +179,15 @@ func TestValidateCustomerPaymentProfile(t *testing.T) {
 		PaymentID: newCustomerPaymentId,
 	}
 
-	response, err := customerProfile.Validate()
+	res, err := customerProfile.Validate()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Customer Payment Profile is VALID")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -219,15 +219,15 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 		},
 	}
 
-	response, err := customer.UpdatePaymentProfile()
+	res, err := customer.UpdatePaymentProfile()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Customer Payment Profile was Updated")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -252,16 +252,16 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 		},
 	}
 
-	response, err := customer.CreateShipping()
+	res, err := customer.CreateShipping()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
-		newCustomerShippingId = response.CustomerAddressID
-		t.Log("New Shipping Added: #", response.CustomerAddressID)
+	if res.Ok() {
+		newCustomerShippingId = res.CustomerAddressID
+		t.Log("New Shipping Added: #", res.CustomerAddressID)
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 }
@@ -272,12 +272,12 @@ func TestGetCustomerShippingProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response, err := customer.Info()
+	res, err := customer.Info()
 	if err != nil {
 		t.Fail()
 	}
 
-	shippingProfiles := response.ShippingProfiles()
+	shippingProfiles := res.ShippingProfiles()
 
 	t.Log("Customer Shipping Profiles", shippingProfiles)
 
@@ -305,15 +305,15 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 		},
 	}
 
-	response, err := customer.UpdateShippingProfile()
+	res, err := customer.UpdateShippingProfile()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Ok() {
+	if res.Ok() {
 		t.Log("Shipping Address Profile was updated")
 	} else {
-		t.Log(response.ErrorMessage())
+		t.Log(res.ErrorMessage())
 		t.Fail()
 	}
 
@@ -348,16 +348,16 @@ func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 		},
 	}
 
-	response, err := subscription.Charge()
+	res, err := subscription.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		newSubscriptionId = response.SubscriptionID
-		t.Log("Customer #", response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
+	if res.Approved() {
+		newSubscriptionId = res.SubscriptionID
+		t.Log("Customer #", res.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 		t.Fail()
 	}
 
@@ -369,16 +369,16 @@ func TestGetCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response, err := customer.Info()
+	res, err := customer.Info()
 	if err != nil {
 		t.Fail()
 	}
 
-	paymentProfiles := response.PaymentProfiles()
-	shippingProfiles := response.ShippingProfiles()
-	subscriptions := response.Subscriptions()
+	paymentProfiles := res.PaymentProfiles()
+	shippingProfiles := res.ShippingProfiles()
+	subscriptions := res.Subscriptions()
 
-	t.Log("Customer Profile", response)
+	t.Log("Customer Profile", res)
 
 	t.Log("Customer Payment Profiles", paymentProfiles)
 	t.Log("Customer Shipping Profiles", shippingProfiles)

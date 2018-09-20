@@ -15,8 +15,8 @@ func (tranx NewTransaction) Charge(c Client) (*TransactionResponse, error) {
 		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*TransactionResponse, error) {
@@ -31,8 +31,8 @@ func (tranx NewTransaction) ChargeProfile(profile Customer, c Client) (*Transact
 			},
 		},
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
@@ -44,8 +44,8 @@ func (tranx NewTransaction) AuthOnly(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func (tranx NewTransaction) Refund(c Client) (*TransactionResponse, error) {
@@ -58,8 +58,8 @@ func (tranx NewTransaction) Refund(c Client) (*TransactionResponse, error) {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func (tranx PreviousTransaction) Void(c Client) (*TransactionResponse, error) {
@@ -68,8 +68,8 @@ func (tranx PreviousTransaction) Void(c Client) (*TransactionResponse, error) {
 		TransactionType: "voidTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func (tranx PreviousTransaction) Capture(c Client) (*TransactionResponse, error) {
@@ -78,8 +78,8 @@ func (tranx PreviousTransaction) Capture(c Client) (*TransactionResponse, error)
 		TransactionType: "priorAuthCaptureTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	response, err := c.SendTransactionRequest(new)
-	return response, err
+	res, err := c.SendTransactionRequest(new)
+	return res, err
 }
 
 func UpdateSplitTenderGround() {
@@ -121,9 +121,9 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat TransactionResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +150,7 @@ type TransactionResponse struct {
 }
 
 type TranxResponse struct {
-	ResponseCode   string `json:"responseCode"`
+	ResponseCode   string `json:"resCode"`
 	AuthCode       string `json:"authCode"`
 	AvsResultCode  string `json:"avsResultCode"`
 	CvvResultCode  string `json:"cvvResultCode"`
