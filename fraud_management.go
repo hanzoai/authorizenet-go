@@ -5,13 +5,13 @@ import (
 	"time"
 )
 
-func UnsettledBatchList() (*TransactionsList, error) {
-	response, err := SendGetUnsettled()
+func UnsettledBatchList(c Client) (*TransactionsList, error) {
+	response, err := c.SendGetUnsettled()
 	return response, err
 }
 
-func (input TransactionsList) List() ([]BatchTransaction, error) {
-	response, err := SendGetUnsettled()
+func (input TransactionsList) List(c Client) ([]BatchTransaction, error) {
+	response, err := c.SendGetUnsettled()
 	return response.Transactions, err
 }
 
@@ -72,10 +72,10 @@ type HeldTransactionRequest struct {
 	RefTransID string `json:"refTransId"`
 }
 
-func SendTransactionUpdate(tranx PreviousTransaction, method string) (*TransactionResponse, error) {
+func (c Client) SendTransactionUpdate(tranx PreviousTransaction, method string) (*TransactionResponse, error) {
 	action := UpdateHeldTransactionRequest{
 		UpdateHeldTransaction: UpdateHeldTransaction{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			RefID: tranx.RefId,
 			HeldTransactionRequest: HeldTransactionRequest{
 				Action:     method,
@@ -87,7 +87,7 @@ func SendTransactionUpdate(tranx PreviousTransaction, method string) (*Transacti
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -96,20 +96,20 @@ func SendTransactionUpdate(tranx PreviousTransaction, method string) (*Transacti
 	return &dat, err
 }
 
-func (t PreviousTransaction) Approve() (*TransactionResponse, error) {
-	response, err := SendTransactionUpdate(t, "approve")
+func (t PreviousTransaction) Approve(c Client) (*TransactionResponse, error) {
+	response, err := c.SendTransactionUpdate(t, "approve")
 	return response, err
 }
 
-func (t PreviousTransaction) Decline() (*TransactionResponse, error) {
-	response, err := SendTransactionUpdate(t, "decline")
+func (t PreviousTransaction) Decline(c Client) (*TransactionResponse, error) {
+	response, err := c.SendTransactionUpdate(t, "decline")
 	return response, err
 }
 
-func SendGetUnsettled() (*TransactionsList, error) {
+func (c Client) SendGetUnsettled() (*TransactionsList, error) {
 	action := UnsettledTransactionsRequest{
 		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Status:                 "pendingApproval",
 		},
 	}
@@ -117,7 +117,7 @@ func SendGetUnsettled() (*TransactionsList, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat TransactionsList
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
