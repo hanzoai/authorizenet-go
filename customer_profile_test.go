@@ -11,6 +11,7 @@ var newCustomerProfileId string
 var newCustomerPaymentId string
 var newCustomerShippingId string
 var newSecondCustomerProfileId string
+var client Client
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
@@ -20,12 +21,12 @@ func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
 	apiKey := os.Getenv("apiKey")
 	//apiMode := os.Getenv("mode")
-	SetAPIInfo(apiName, apiKey, "test")
+	client = *New(apiName, apiKey, true)
 	t.Log("API Info Set")
 }
 
 func TestIsConnected(t *testing.T) {
-	authenticated, err := IsConnected()
+	authenticated, err := client.IsConnected()
 	if err != nil {
 		t.Fail()
 	}
@@ -51,7 +52,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 		},
 	}
 
-	res, err := customer.CreateProfile()
+	res, err := customer.CreateProfile(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -67,7 +68,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 }
 
 func TestGetProfileIds(t *testing.T) {
-	profiles, _ := GetProfileIds()
+	profiles, _ := client.GetProfileIds()
 
 	for _, p := range profiles {
 		t.Log("Profile ID #", p)
@@ -89,7 +90,7 @@ func TestUpdateCustomerProfile(t *testing.T) {
 		Email:              "info@updatedemail.com",
 	}
 
-	res, err := customer.UpdateProfile()
+	res, err := customer.UpdateProfile(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -126,14 +127,14 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 		},
 	}
 
-	res, err := paymentProfile.Add()
+	res, err := paymentProfile.Add(client)
 	if err != nil {
 		t.Fail()
 	}
 
 	if res.Ok() {
 		newCustomerPaymentId = res.CustomerPaymentProfileID
-		t.Log("Created new Payment Profile #", res.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
+		t.Log("Created new Payment Profile #", res.CustomerPaymentProfileID, "for Customer ID: ", res.CustomerProfileId)
 	} else {
 		t.Log(res.ErrorMessage())
 		t.Fail()
@@ -147,7 +148,7 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	res, err := customer.Info()
+	res, err := customer.Info(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -164,7 +165,7 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 
 func TestGetCustomerPaymentProfileList(t *testing.T) {
 
-	profileIds, err := GetPaymentProfileIds("2020-03", "cardsExpiringInMonth")
+	profileIds, err := client.GetPaymentProfileIds("2020-03", "cardsExpiringInMonth")
 	if err != nil {
 		t.Fail()
 	}
@@ -179,7 +180,7 @@ func TestValidateCustomerPaymentProfile(t *testing.T) {
 		PaymentID: newCustomerPaymentId,
 	}
 
-	res, err := customerProfile.Validate()
+	res, err := customerProfile.Validate(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -219,7 +220,7 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 		},
 	}
 
-	res, err := customer.UpdatePaymentProfile()
+	res, err := customer.UpdatePaymentProfile(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -252,7 +253,7 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 		},
 	}
 
-	res, err := customer.CreateShipping()
+	res, err := customer.CreateShipping(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -272,7 +273,7 @@ func TestGetCustomerShippingProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	res, err := customer.Info()
+	res, err := customer.Info(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -305,7 +306,7 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 		},
 	}
 
-	res, err := customer.UpdateShippingProfile()
+	res, err := customer.UpdateShippingProfile(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -348,14 +349,14 @@ func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 		},
 	}
 
-	res, err := subscription.Charge()
+	res, err := subscription.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
 
 	if res.Approved() {
 		newSubscriptionId = res.SubscriptionID
-		t.Log("Customer #", res.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
+		t.Log("Customer #", res.CustomerProfileId(), " Created a New Subscription: ", res.SubscriptionID)
 	} else {
 		t.Log(res.ErrorMessage(), "\n")
 		t.Fail()
@@ -369,7 +370,7 @@ func TestGetCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	res, err := customer.Info()
+	res, err := customer.Info(client)
 	if err != nil {
 		t.Fail()
 	}
