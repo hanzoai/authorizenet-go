@@ -10,30 +10,26 @@ var newTransactionId string
 
 func main() {
 
-	apiName := os.Getenv("apiName")
-	apiKey := os.Getenv("apiKey")
+	client := authorizenet.New(apiName, apiKey, true)
 
-	auth.SetAPIInfo(apiName, apiKey, "test")
-
-	if auth.IsConnected() {
+	if client.IsConnected() {
 		fmt.Println("Connected to Authorize.net!")
 	}
 
-	ChargeCustomer()
-
-	VoidTransaction()
+	client.ChargeCustomer()
+	client.VoidTransaction()
 }
 
 func ChargeCustomer() {
 
-	newTransaction := auth.NewTransaction{
+	newTransaction := client.NewTransaction{
 		Amount: "13.75",
-		CreditCard: auth.CreditCard{
+		CreditCard: authorizenet.CreditCard{
 			CardNumber:     "4012888818888",
 			ExpirationDate: "08/25",
 			CardCode:       "393",
 		},
-		BillTo: &auth.BillTo{
+		BillTo: &authorizenet.BillTo{
 			FirstName:   "Timmy",
 			LastName:    "Jimmy",
 			Address:     "1111 green ct",
@@ -54,7 +50,7 @@ func ChargeCustomer() {
 
 func VoidTransaction() {
 
-	newTransaction := auth.PreviousTransaction{
+	newTransaction := client.PreviousTransaction{
 		RefId: newTransactionId,
 	}
 	response := newTransaction.Void()
