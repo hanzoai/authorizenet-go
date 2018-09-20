@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 )
 
-func GetPaymentProfileIds(month string, method string) (*GetCustomerPaymentProfileListResponse, error) {
+func (c *Client) GetPaymentProfileIds(month string, method string) (*GetCustomerPaymentProfileListResponse, error) {
 	action := GetCustomerPaymentProfileListRequest{
 		GetCustomerPaymentProfileList: GetCustomerPaymentProfileList{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SearchType:             method,
 			Month:                  month,
 			Sorting: Sorting{
@@ -24,7 +24,7 @@ func GetPaymentProfileIds(month string, method string) (*GetCustomerPaymentProfi
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat GetCustomerPaymentProfileListResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -100,17 +100,17 @@ func (profile Profile) UpdateShippingProfile() (*MessagesResponse, error) {
 	return response, err
 }
 
-func GetProfileIds() ([]string, error) {
+func (c *Client) GetProfileIds() ([]string, error) {
 	action := GetCustomerProfileIdsRequest{
 		CustomerProfileIdsRequest: CustomerProfileIdsRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
 		return []string{}, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat CustomerProfileIdsResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
