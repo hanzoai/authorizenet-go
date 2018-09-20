@@ -1,7 +1,5 @@
 # Authorize.net CIM, AIM, and ARB for Go Language
 
-Forked from https://github.com/hanzoai/authorizenet
-
 [![Build Status](https://travis-ci.org/hanzoai/authorizenet.svg?branch=master)](https://travis-ci.org/hanzoai/authorizenet)  [![Code Climate](https://lima.codeclimate.com/github/hanzoai/authorizenet/badges/gpa.svg)](https://lima.codeclimate.com/github/hanzoai/authorizenet) [![Coverage Status](https://coveralls.io/repos/github/hanzoai/authorizenet/badge.svg?branch=master)](https://coveralls.io/github/hanzoai/authorizenet?branch=master) [![GoDoc](https://godoc.org/github.com/hanzoai/authorizenet?status.svg)](https://godoc.org/github.com/hanzoai/authorizenet) [![Go Report Card](https://goreportcard.com/badge/github.com/hanzoai/authorizenet)](https://goreportcard.com/report/github.com/hanzoai/authorizenet)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM, AIM, and ARB API.
@@ -781,9 +779,4 @@ http://developer.authorize.net/api/reference/#customer-profiles
 https://developer.authorize.net/hello_world/sandbox/
 
 # License
-This golang package is release under MIT license.
-Feel free to submit a Pull Request if you have updates!
-
-*This software gets reponses in JSON, but Authorize.net currently says "JSON Support is in BETA, please contact us if you intend to use it in production."* Make sure you test in sandbox mode!
-
-
+[MIT](LICENSE). Originally forked from https://github.com/hunterlong/AuthorizeCIM.
