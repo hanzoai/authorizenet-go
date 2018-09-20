@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func UnsettledBatchList(c Client) (*TransactionsList, error) {
+func (c Client) UnsettledBatchList() (*TransactionsList, error) {
 	res, err := c.SendGetUnsettled()
 	return res, err
 }
