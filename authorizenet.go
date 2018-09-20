@@ -14,6 +14,7 @@ type Client struct {
 	APIName   string
 	APIKey    string
 	Endpoint  string
+	Mode	  string
 	Client    *http.Client
 	Live      bool
 	Connected bool
@@ -35,6 +36,7 @@ func New(apiName string, apiKey string, testMode bool) *Client {
 		APIKey:   apiKey,
 		APIName:  apiName,
 		Endpoint: endpoint,
+		Mode: mode,
 		Client:   &http.Client{Timeout: defaultHTTPTimeout},
 	}
 }

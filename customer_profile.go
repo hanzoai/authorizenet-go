@@ -33,43 +33,43 @@ func (c *Client) GetPaymentProfileIds(month string, method string) (*GetCustomer
 	return &dat, err
 }
 
-func (profile Profile) CreateProfile() (*CustomProfileResponse, error) {
-	response, err := CreateProfile(profile)
+func (profile Profile) CreateProfile(c Client) (*CustomProfileResponse, error) {
+	response, err := c.CreateProfile(profile)
 	return response, err
 }
 
-func (profile Profile) CreateShipping() (*CreateCustomerShippingAddressResponse, error) {
-	response, err := CreateShipping(profile)
+func (profile Profile) CreateShipping(c Client) (*CreateCustomerShippingAddressResponse, error) {
+	response, err := c.CreateShipping(profile)
 	return response, err
 }
 
-func (customer Customer) Info() (*GetCustomerProfileResponse, error) {
-	response, err := GetProfile(customer)
+func (customer Customer) Info(c Client) (*GetCustomerProfileResponse, error) {
+	response, err := c.GetProfile(customer)
 	return response, err
 }
 
-func (customer Customer) Validate() (*ValidateCustomerPaymentProfileResponse, error) {
-	response, err := ValidatePaymentProfile(customer)
+func (customer Customer) Validate(c Client) (*ValidateCustomerPaymentProfileResponse, error) {
+	response, err := c.ValidatePaymentProfile(customer)
 	return response, err
 }
 
-func (customer Customer) DeleteProfile() (*MessagesResponse, error) {
-	response, err := DeleteProfile(customer)
+func (customer Customer) DeleteProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.DeleteProfile(customer)
 	return response, err
 }
 
-func (customer Customer) DeletePaymentProfile() (*MessagesResponse, error) {
-	response, err := DeletePaymentProfile(customer)
+func (customer Customer) DeletePaymentProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.DeletePaymentProfile(customer)
 	return response, err
 }
 
-func (customer Customer) DeleteShippingProfile() (*MessagesResponse, error) {
-	response, err := DeleteShippingProfile(customer)
+func (customer Customer) DeleteShippingProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.DeleteShippingProfile(customer)
 	return response, err
 }
 
-func (payment CustomerPaymentProfile) Add() (*CustomerPaymentProfileResponse, error) {
-	response, err := CreatePaymentProfile(payment)
+func (payment CustomerPaymentProfile) Add(c Client) (*CustomerPaymentProfileResponse, error) {
+	response, err := c.CreatePaymentProfile(payment)
 	return response, err
 }
 
@@ -85,18 +85,18 @@ func (response GetCustomerProfileResponse) Subscriptions() []string {
 	return response.SubscriptionIds
 }
 
-func (profile Profile) UpdateProfile() (*MessagesResponse, error) {
-	response, err := UpdateProfile(profile)
+func (profile Profile) UpdateProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.UpdateProfile(profile)
 	return response, err
 }
 
-func (profile Profile) UpdatePaymentProfile() (*MessagesResponse, error) {
-	response, err := UpdatePaymentProfile(profile)
+func (profile Profile) UpdatePaymentProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.UpdatePaymentProfile(profile)
 	return response, err
 }
 
-func (profile Profile) UpdateShippingProfile() (*MessagesResponse, error) {
-	response, err := UpdateShippingProfile(profile)
+func (profile Profile) UpdateShippingProfile(c Client) (*MessagesResponse, error) {
+	response, err := c.UpdateShippingProfile(profile)
 	return response, err
 }
 
@@ -119,20 +119,20 @@ func (c *Client) GetProfileIds() ([]string, error) {
 	return dat.Ids, err
 }
 
-func ValidatePaymentProfile(customer Customer) (*ValidateCustomerPaymentProfileResponse, error) {
+func (c *Client) ValidatePaymentProfile(customer Customer) (*ValidateCustomerPaymentProfileResponse, error) {
 	action := ValidateCustomerPaymentProfileRequest{
 		ValidateCustomerPaymentProfile: ValidateCustomerPaymentProfile{
-			MerchantAuthentication:   GetAuthentication(),
+			MerchantAuthentication:   c.GetAuthentication(),
 			CustomerProfileID:        customer.ID,
 			CustomerPaymentProfileID: customer.PaymentID,
-			ValidationMode:           testMode,
+			ValidationMode:           c.Mode,
 		},
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat ValidateCustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -141,10 +141,10 @@ func ValidatePaymentProfile(customer Customer) (*ValidateCustomerPaymentProfileR
 	return &dat, err
 }
 
-func GetProfile(customer Customer) (*GetCustomerProfileResponse, error) {
+func (c *Client) GetProfile(customer Customer) (*GetCustomerProfileResponse, error) {
 	action := CustomerProfileRequest{
 		GetCustomerProfile: GetCustomerProfile{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			CustomerProfileID:      customer.ID,
 		},
 	}
@@ -152,7 +152,7 @@ func GetProfile(customer Customer) (*GetCustomerProfileResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat GetCustomerProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -161,12 +161,12 @@ func GetProfile(customer Customer) (*GetCustomerProfileResponse, error) {
 	return &dat, err
 }
 
-func CreateProfile(profile Profile) (*CustomProfileResponse, error) {
+func (c *Client) CreateProfile(profile Profile) (*CustomProfileResponse, error) {
 	action := CreateCustomerProfileRequest{
 		CreateCustomerProfile: CreateCustomerProfile{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Profile:                profile,
-			ValidationMode:         testMode,
+			ValidationMode:         c.Mode,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -174,7 +174,7 @@ func CreateProfile(profile Profile) (*CustomProfileResponse, error) {
 		return nil, err
 	}
 
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat CustomProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -183,10 +183,10 @@ func CreateProfile(profile Profile) (*CustomProfileResponse, error) {
 	return &dat, err
 }
 
-func CreateShipping(profile Profile) (*CreateCustomerShippingAddressResponse, error) {
+func (c *Client) CreateShipping(profile Profile) (*CreateCustomerShippingAddressResponse, error) {
 	action := CreateCustomerShippingAddressRequest{
 		CreateCustomerShippingAddress: CreateCustomerShippingAddress{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Address:                profile.Shipping,
 			CustomerProfileID:      profile.CustomerProfileId,
 		},
@@ -195,7 +195,7 @@ func CreateShipping(profile Profile) (*CreateCustomerShippingAddressResponse, er
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat CreateCustomerShippingAddressResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -204,39 +204,39 @@ func CreateShipping(profile Profile) (*CreateCustomerShippingAddressResponse, er
 	return &dat, err
 }
 
-func UpdateProfile(profile Profile) (*MessagesResponse, error) {
+func (c *Client) UpdateProfile(profile Profile) (*MessagesResponse, error) {
 	action := UpdateCustomerProfileRequest{
 		UpdateCustomerProfile: UpdateCustomerProfile{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Profile:                profile,
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func UpdatePaymentProfile(profile Profile) (*MessagesResponse, error) {
+func (c *Client) UpdatePaymentProfile(profile Profile) (*MessagesResponse, error) {
 	action := UpdateCustomerPaymentProfileRequest{
 		UpdateCustomerPaymentProfile: UpdateCustomerPaymentProfile{
 			CustomerProfileID:      profile.CustomerProfileId,
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			UpPaymentProfile: UpPaymentProfile{
 				BillTo:                   profile.PaymentProfiles.BillTo,
 				Payment:                  profile.PaymentProfiles.Payment,
 				CustomerPaymentProfileID: profile.PaymentProfileId,
 			},
-			ValidationMode: testMode,
+			ValidationMode: c.Mode,
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func UpdateShippingProfile(profile Profile) (*MessagesResponse, error) {
+func (c *Client) UpdateShippingProfile(profile Profile) (*MessagesResponse, error) {
 	action := UpdateCustomerShippingAddressRequest{
 		UpdateCustomerShippingAddress: UpdateCustomerShippingAddress{
 			CustomerProfileID:      profile.CustomerProfileId,
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Address: Address{
 				FirstName:         "My",
 				LastName:          "Name",
@@ -250,27 +250,27 @@ func UpdateShippingProfile(profile Profile) (*MessagesResponse, error) {
 			},
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func DeleteProfile(customer Customer) (*MessagesResponse, error) {
+func (c *Client) DeleteProfile(customer Customer) (*MessagesResponse, error) {
 	action := DeleteCustomerProfileRequest{
 		DeleteCustomerProfile: DeleteCustomerProfile{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			CustomerProfileID:      customer.ID,
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func MessageResponder(d interface{}) (*MessagesResponse, error) {
+func (c *Client) MessageResponder(d interface{}) (*MessagesResponse, error) {
 	jsoned, err := json.Marshal(d)
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat MessagesResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -279,34 +279,34 @@ func MessageResponder(d interface{}) (*MessagesResponse, error) {
 	return &dat, err
 }
 
-func DeletePaymentProfile(customer Customer) (*MessagesResponse, error) {
+func (c *Client) DeletePaymentProfile(customer Customer) (*MessagesResponse, error) {
 	action := DeleteCustomerPaymentProfileRequest{
 		DeleteCustomerPaymentProfile: DeleteCustomerPaymentProfile{
-			MerchantAuthentication:   GetAuthentication(),
+			MerchantAuthentication:   c.GetAuthentication(),
 			CustomerProfileID:        customer.ID,
 			CustomerPaymentProfileID: customer.PaymentID,
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func DeleteShippingProfile(customer Customer) (*MessagesResponse, error) {
+func (c *Client) DeleteShippingProfile(customer Customer) (*MessagesResponse, error) {
 	action := DeleteCustomerShippingProfileRequest{
 		DeleteCustomerShippingProfile: DeleteCustomerShippingProfile{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			CustomerProfileID:      customer.ID,
 			CustomerShippingID:     customer.ShippingID,
 		},
 	}
-	dat, err := MessageResponder(action)
+	dat, err := c.MessageResponder(action)
 	return dat, err
 }
 
-func CreatePaymentProfile(profile CustomerPaymentProfile) (*CustomerPaymentProfileResponse, error) {
+func (c *Client) CreatePaymentProfile(profile CustomerPaymentProfile) (*CustomerPaymentProfileResponse, error) {
 	action := CreateCustomerPaymentProfile{
 		CreateCustomerPaymentProfileRequest: CreateCustomerPaymentProfileRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			CustomerProfileID:      profile.CustomerProfileID,
 			PaymentProfile: PaymentProfile{
 				BillTo:                profile.PaymentProfile.BillTo,
@@ -319,7 +319,7 @@ func CreatePaymentProfile(profile CustomerPaymentProfile) (*CustomerPaymentProfi
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat CustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
