@@ -117,11 +117,11 @@ func (c Client) SendTransactionRequest(input TransactionRequest) (*TransactionRe
 			TransactionRequest:     input,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {

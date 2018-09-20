@@ -26,11 +26,11 @@ func (r Range) SettledBatch(c Client) (*BatchListResponse, error) {
 			LastSettlementDate:     r.End,
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat BatchListResponse
 	json.Unmarshal(response, &dat)
 	return &dat, err
@@ -42,11 +42,11 @@ func (c Client) UnSettledBatch() (*UnsettledTransactionListResponse, error) {
 			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat UnsettledTransactionListResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat, err
@@ -71,11 +71,11 @@ func (r Range) Transactions(c Client) (*GetTransactionListResponse, error) {
 			BatchID:                r.BatchId,
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat GetTransactionListResponse
 	json.Unmarshal(response, &dat)
 	return &dat, err
@@ -88,11 +88,11 @@ func (r Range) Statistics(c Client) (*Statistics, error) {
 			BatchID:                r.BatchId,
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat BatchStatisticsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat.Batch.Statistics[0], err
@@ -104,11 +104,11 @@ func (c Client) GetMerchantDetails() (*MerchantDetailsResponse, error) {
 			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat MerchantDetailsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat, err
@@ -121,11 +121,11 @@ func (tranx PreviousTransaction) Info(c Client) (*FullTransaction, error) {
 			TransID:                tranx.RefId,
 		},
 	}
-	jsoned, err := json.Marshal(new)
+	req, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat TransactionDetailsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat.Transaction, err
