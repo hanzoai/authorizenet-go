@@ -17,10 +17,10 @@ func (r BatchListResponse) List() []BatchList {
 	return r.BatchList
 }
 
-func (r Range) SettledBatch() (*BatchListResponse, error) {
+func (r Range) SettledBatch(c Client) (*BatchListResponse, error) {
 	new := GetSettledBatchListRequest{
 		GetSettledBatchList: GetSettledBatchList{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			IncludeStatistics:      "true",
 			FirstSettlementDate:    r.Start,
 			LastSettlementDate:     r.End,
@@ -30,23 +30,23 @@ func (r Range) SettledBatch() (*BatchListResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat BatchListResponse
 	json.Unmarshal(response, &dat)
 	return &dat, err
 }
 
-func UnSettledBatch() (*UnsettledTransactionListResponse, error) {
+func (c Client) UnSettledBatch() (*UnsettledTransactionListResponse, error) {
 	new := GetUnsettledBatchTransactionListRequest{
 		GetUnsettledTransactionList: GetUnsettledTransactionList{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
 	jsoned, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat UnsettledTransactionListResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat, err
@@ -64,10 +64,10 @@ func (r *GetTransactionListResponse) Count() int {
 	return r.GetTransactionList.TotalNumInResultSet
 }
 
-func (r Range) Transactions() (*GetTransactionListResponse, error) {
+func (r Range) Transactions(c Client) (*GetTransactionListResponse, error) {
 	new := GetTransactionListRequest{
 		GetTransactionList: GetTransactionList{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			BatchID:                r.BatchId,
 		},
 	}
@@ -75,16 +75,16 @@ func (r Range) Transactions() (*GetTransactionListResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat GetTransactionListResponse
 	json.Unmarshal(response, &dat)
 	return &dat, err
 }
 
-func (r Range) Statistics() (*Statistics, error) {
+func (r Range) Statistics(c Client) (*Statistics, error) {
 	new := GetBatchStatisticsRequest{
 		GetBatchStatistics: GetBatchStatistics{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			BatchID:                r.BatchId,
 		},
 	}
@@ -92,32 +92,32 @@ func (r Range) Statistics() (*Statistics, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat BatchStatisticsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat.Batch.Statistics[0], err
 }
 
-func GetMerchantDetails() (*MerchantDetailsResponse, error) {
+func (c Client) GetMerchantDetails() (*MerchantDetailsResponse, error) {
 	new := GetMerchantDetailsRequest{
 		GetMerchantDetailsReq: GetMerchantDetailsReq{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
 	jsoned, err := json.Marshal(new)
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat MerchantDetailsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat, err
 }
 
-func (tranx PreviousTransaction) Info() (*FullTransaction, error) {
+func (tranx PreviousTransaction) Info(c Client) (*FullTransaction, error) {
 	new := GetTransactionDetailsRequest{
 		GetTransactionDetails: GetTransactionDetails{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			TransID:                tranx.RefId,
 		},
 	}
@@ -125,7 +125,7 @@ func (tranx PreviousTransaction) Info() (*FullTransaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat TransactionDetailsResponse
 	err = json.Unmarshal(response, &dat)
 	return &dat.Transaction, err

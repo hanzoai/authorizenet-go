@@ -42,7 +42,7 @@ func New(apiName string, apiKey string, testMode bool) *Client {
 }
 
 func (c *Client) IsConnected() (bool, error) {
-	info, err := GetMerchantDetails()
+	info, err := c.GetMerchantDetails()
 	if err != nil {
 		return false, err
 	}
