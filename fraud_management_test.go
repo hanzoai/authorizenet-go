@@ -5,13 +5,13 @@ import (
 )
 
 func TestGetUnsettledTransactions(t *testing.T) {
-	transactions, err := UnsettledBatchList()
+	transactions, err := client.UnsettledBatchList()
 	if err != nil {
 		t.Fail()
 	}
 
 	t.Log("Count Unsettled: ", transactions.Count)
-	t.Log(transactions.List())
+	t.Log(transactions.List(client))
 }
 
 func TestApproveTransaction(t *testing.T) {
@@ -20,7 +20,7 @@ func TestApproveTransaction(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	res, err := oldTransaction.Approve()
+	res, err := oldTransaction.Approve(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -38,7 +38,7 @@ func TestDeclineTransaction2(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	res, err := oldTransaction.Decline()
+	res, err := oldTransaction.Decline(client)
 	if err != nil {
 		t.Fail()
 	}
