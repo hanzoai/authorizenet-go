@@ -16,7 +16,7 @@ func TestChargeCard(t *testing.T) {
 			ExpirationDate: "10/23",
 		},
 	}
-	res, err := newTransaction.Charge()
+	res, err := newTransaction.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -49,7 +49,7 @@ func TestAVSDeclinedChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	res, err := newTransaction.Charge()
+	res, err := newTransaction.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -85,7 +85,7 @@ func TestAVSChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	res, err := newTransaction.Charge()
+	res, err := newTransaction.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -129,7 +129,7 @@ func TestDeclinedChargeCard(t *testing.T) {
 			PhoneNumber: "8885555555",
 		},
 	}
-	res, err := newTransaction.Charge()
+	res, err := newTransaction.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -154,7 +154,7 @@ func TestAuthOnlyCard(t *testing.T) {
 			ExpirationDate: "10/27",
 		},
 	}
-	res, err := newTransaction.AuthOnly()
+	res, err := newTransaction.AuthOnly(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -172,7 +172,7 @@ func TestCaptureAuth(t *testing.T) {
 		Amount: "49.99",
 		RefId:  previousAuth,
 	}
-	res, err := oldTransaction.Capture()
+	res, err := oldTransaction.Capture(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -192,7 +192,7 @@ func TestChargeCardChannel(t *testing.T) {
 		},
 		AuthCode: "RANDOMAUTHCODE",
 	}
-	res, err := newTransaction.Charge()
+	res, err := newTransaction.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -214,7 +214,7 @@ func TestRefundCard(t *testing.T) {
 		},
 		RefTransId: "0392482938402",
 	}
-	res, err := newTransaction.Refund()
+	res, err := newTransaction.Refund(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -229,7 +229,7 @@ func TestVoidCard(t *testing.T) {
 	newTransaction := PreviousTransaction{
 		RefId: previousCharged,
 	}
-	res, err := newTransaction.Void()
+	res, err := newTransaction.Void(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -254,7 +254,7 @@ func TestChargeCustomerProfile(t *testing.T) {
 		Amount: "35.00",
 	}
 
-	res, err := newTransaction.ChargeProfile(customer)
+	res, err := newTransaction.ChargeProfile(customer, client)
 	if err != nil {
 		t.Fail()
 	}
