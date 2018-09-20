@@ -11,7 +11,7 @@ func TestGetSettledBatchList(t *testing.T) {
 		End:   Now(),
 	}
 
-	batches, err := list.SettledBatch()
+	batches, err := list.SettledBatch(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -32,7 +32,7 @@ func TestGetTransactionList(t *testing.T) {
 		BatchId: "6933560",
 	}
 
-	batches, err := list.Transactions()
+	batches, err := list.Transactions(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -52,7 +52,7 @@ func TestGetTransactionDetails(t *testing.T) {
 	newTransaction := PreviousTransaction{
 		RefId: "60019493304",
 	}
-	res, err := newTransaction.Info()
+	res, err := newTransaction.Info(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -63,7 +63,7 @@ func TestGetTransactionDetails(t *testing.T) {
 
 func TestGetUnSettledBatchList(t *testing.T) {
 
-	batches, err := UnSettledBatch()
+	batches, err := client.UnSettledBatch()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -84,7 +84,7 @@ func TestGetBatchStatistics(t *testing.T) {
 		BatchId: "6933560",
 	}
 
-	batch, err := list.Statistics()
+	batch, err := list.Statistics(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -100,7 +100,7 @@ func TestGetBatchStatistics(t *testing.T) {
 
 func TestGetMerchantDetails(t *testing.T) {
 
-	info, err := GetMerchantDetails()
+	info, err := client.GetMerchantDetails()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
