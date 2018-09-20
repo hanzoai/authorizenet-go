@@ -12,7 +12,7 @@ func TestCancelSubscription(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo, err := sub.Cancel()
+	subscriptionInfo, err := sub.Cancel(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -33,7 +33,7 @@ func TestCancelSecondSubscription(t *testing.T) {
 		Id: newSecondSubscriptionId,
 	}
 
-	subscriptionInfo, err := sub.Cancel()
+	subscriptionInfo, err := sub.Cancel(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -55,7 +55,7 @@ func TestDeleteCustomerShippingProfile(t *testing.T) {
 		ShippingID: newCustomerShippingId,
 	}
 
-	res, err := customer.DeleteShippingProfile()
+	res, err := customer.DeleteShippingProfile(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -75,7 +75,7 @@ func TestDeleteCustomerPaymentProfile(t *testing.T) {
 		PaymentID: newCustomerPaymentId,
 	}
 
-	res, err := customer.DeletePaymentProfile()
+	res, err := customer.DeletePaymentProfile(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -95,7 +95,7 @@ func TestDeleteCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	res, err := customer.DeleteProfile()
+	res, err := customer.DeleteProfile(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -116,7 +116,7 @@ func TestDeleteSecondCustomerProfile(t *testing.T) {
 		ID: newSecondCustomerProfileId,
 	}
 
-	res, err := customer.DeleteProfile()
+	res, err := customer.DeleteProfile(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -137,7 +137,7 @@ func TestDeclineTransaction(t *testing.T) {
 		RefId: heldTransactionId,
 	}
 
-	res, err := oldTransaction.Decline()
+	res, err := oldTransaction.Decline(client)
 	if err != nil {
 		t.Log(err)
 		t.Fail()

@@ -30,7 +30,7 @@ func TestCreateSubscription(t *testing.T) {
 		},
 	}
 
-	res, err := subscription.Charge()
+	res, err := subscription.Charge(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -53,7 +53,7 @@ func TestGetSubscription(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo, err := sub.Info()
+	subscriptionInfo, err := sub.Info(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -69,7 +69,7 @@ func TestGetSubscriptionStatus(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo, err := sub.Status()
+	subscriptionInfo, err := sub.Status(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -95,7 +95,7 @@ func TestUpdateSubscription(t *testing.T) {
 		SubscriptionId: newSubscriptionId,
 	}
 
-	res, err := subscription.Update()
+	res, err := subscription.Update(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -111,7 +111,7 @@ func TestUpdateSubscription(t *testing.T) {
 
 func TestGetInactiveSubscriptionList(t *testing.T) {
 
-	subscriptionList, err := SubscriptionList("subscriptionInactive")
+	subscriptionList, err := client.SubscriptionList("subscriptionInactive")
 	if err != nil {
 		t.Fail()
 	}
@@ -127,7 +127,7 @@ func TestGetInactiveSubscriptionList(t *testing.T) {
 
 func TestGetActiveSubscriptionList(t *testing.T) {
 
-	subscriptionList, err := SubscriptionList("subscriptionActive")
+	subscriptionList, err := client.SubscriptionList("subscriptionActive")
 	if err != nil {
 		t.Fail()
 	}
@@ -143,7 +143,7 @@ func TestGetActiveSubscriptionList(t *testing.T) {
 
 func TestGetExpiringSubscriptionList(t *testing.T) {
 
-	subscriptionList, err := SubscriptionList("subscriptionExpiringThisMonth")
+	subscriptionList, err := client.SubscriptionList("subscriptionExpiringThisMonth")
 	if err != nil {
 		t.Fail()
 	}
@@ -154,7 +154,7 @@ func TestGetExpiringSubscriptionList(t *testing.T) {
 
 func TestGetCardExpiringSubscriptionList(t *testing.T) {
 
-	subscriptionList, err := SubscriptionList("cardExpiringThisMonth")
+	subscriptionList, err := client.SubscriptionList("cardExpiringThisMonth")
 	if err != nil {
 		t.Fail()
 	}
