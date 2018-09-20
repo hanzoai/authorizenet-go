@@ -20,11 +20,11 @@ func (c *Client) GetPaymentProfileIds(month string, method string) (*GetCustomer
 			},
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat GetCustomerPaymentProfileListResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -106,11 +106,11 @@ func (c *Client) GetProfileIds() ([]string, error) {
 			MerchantAuthentication: c.GetAuthentication(),
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return []string{}, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat CustomerProfileIdsResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -128,11 +128,11 @@ func (c *Client) ValidatePaymentProfile(customer Customer) (*ValidateCustomerPay
 			ValidationMode:           c.Mode,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat ValidateCustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -148,11 +148,11 @@ func (c *Client) GetProfile(customer Customer) (*GetCustomerProfileResponse, err
 			CustomerProfileID:      customer.ID,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat GetCustomerProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -169,12 +169,12 @@ func (c *Client) CreateProfile(profile Profile) (*CustomProfileResponse, error) 
 			ValidationMode:         c.Mode,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
 
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat CustomProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -191,11 +191,11 @@ func (c *Client) CreateShipping(profile Profile) (*CreateCustomerShippingAddress
 			CustomerProfileID:      profile.CustomerProfileId,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat CreateCustomerShippingAddressResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -266,11 +266,11 @@ func (c *Client) DeleteProfile(customer Customer) (*MessagesResponse, error) {
 }
 
 func (c *Client) MessageResponder(d interface{}) (*MessagesResponse, error) {
-	jsoned, err := json.Marshal(d)
+	req, err := json.Marshal(d)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat MessagesResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -315,11 +315,11 @@ func (c *Client) CreatePaymentProfile(profile CustomerPaymentProfile) (*Customer
 			},
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat CustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {

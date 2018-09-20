@@ -136,11 +136,11 @@ func (c Client) SendSubscription(sub Subscription) (*SubscriptionResponse, error
 			Subscription:           sub,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -161,11 +161,11 @@ func (c Client) UpdateSubscription(sub Subscription) (*SubscriptionResponse, err
 			},
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -185,11 +185,11 @@ func (sub SetSubscription) Info(c Client) (*GetSubscriptionResponse, error) {
 			SubscriptionID:         sub.Id,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat GetSubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -212,11 +212,11 @@ func (sub SetSubscription) Status(c Client) (*SubscriptionStatus, error) {
 			SubscriptionID:         sub.Id,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat SubscriptionStatus
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -232,11 +232,11 @@ func (sub SetSubscription) Cancel(c Client) (*SubscriptionCancel, error) {
 			SubscriptionID:         sub.Id,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat SubscriptionCancel
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -260,11 +260,11 @@ func (c Client) SubscriptionList(search string) (*GetSubscriptionList, error) {
 			},
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat GetSubscriptionList
 	err = json.Unmarshal(response, &dat)
 	if err != nil {

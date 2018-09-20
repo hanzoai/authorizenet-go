@@ -83,11 +83,11 @@ func (c Client) SendTransactionUpdate(tranx PreviousTransaction, method string) 
 			},
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -113,11 +113,11 @@ func (c Client) SendGetUnsettled() (*TransactionsList, error) {
 			Status:                 "pendingApproval",
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	req, err := json.Marshal(action)
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(jsoned)
+	response, err := c.SendRequest(req)
 	var dat TransactionsList
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
