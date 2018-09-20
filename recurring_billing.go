@@ -23,13 +23,13 @@ func (response SubscriptionResponse) ErrorMessage() string {
 	return response.Messages.Message[0].Text
 }
 
-func (sub Subscription) Charge() (*SubscriptionResponse, error) {
-	response, err := SendSubscription(sub)
+func (sub Subscription) Charge(c Client) (*SubscriptionResponse, error) {
+	response, err := c.SendSubscription(sub)
 	return response, err
 }
 
-func (sub Subscription) Update() (*SubscriptionResponse, error) {
-	response, err := UpdateSubscription(sub)
+func (sub Subscription) Update(c Client) (*SubscriptionResponse, error) {
+	response, err := c.UpdateSubscription(sub)
 	return response, err
 }
 
@@ -129,10 +129,10 @@ type SubscriptionResponse struct {
 	} `json:"messages"`
 }
 
-func SendSubscription(sub Subscription) (*SubscriptionResponse, error) {
+func (c Client) SendSubscription(sub Subscription) (*SubscriptionResponse, error) {
 	action := CreateSubscriptionRequest{
 		ARBCreateSubscriptionRequest: ARBCreateSubscriptionRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			Subscription:           sub,
 		},
 	}
@@ -140,7 +140,7 @@ func SendSubscription(sub Subscription) (*SubscriptionResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -149,10 +149,10 @@ func SendSubscription(sub Subscription) (*SubscriptionResponse, error) {
 	return &dat, err
 }
 
-func UpdateSubscription(sub Subscription) (*SubscriptionResponse, error) {
+func (c Client) UpdateSubscription(sub Subscription) (*SubscriptionResponse, error) {
 	action := UpdateSubscriptionRequest{
 		ARBUpdateSubscriptionRequest: ARBUpdateSubscriptionRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SubscriptionId:         sub.SubscriptionId,
 			Subscription: Subscription{
 				Payment: &Payment{
@@ -165,7 +165,7 @@ func UpdateSubscription(sub Subscription) (*SubscriptionResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -178,10 +178,10 @@ func (sub GetSubscriptionList) Count() int {
 	return sub.TotalNumInResultSet
 }
 
-func (sub SetSubscription) Info() (*GetSubscriptionResponse, error) {
+func (sub SetSubscription) Info(c Client) (*GetSubscriptionResponse, error) {
 	action := GetSubscriptionRequest{
 		ARBGetSubscriptionRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SubscriptionID:         sub.Id,
 		},
 	}
@@ -189,7 +189,7 @@ func (sub SetSubscription) Info() (*GetSubscriptionResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat GetSubscriptionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -205,10 +205,10 @@ func (s SubscriptionStatus) Active() bool {
 	return false
 }
 
-func (sub SetSubscription) Status() (*SubscriptionStatus, error) {
+func (sub SetSubscription) Status(c Client) (*SubscriptionStatus, error) {
 	action := GetSubscriptionStatusRequest{
 		ARBGetSubscriptionStatusRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SubscriptionID:         sub.Id,
 		},
 	}
@@ -216,7 +216,7 @@ func (sub SetSubscription) Status() (*SubscriptionStatus, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat SubscriptionStatus
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -225,10 +225,10 @@ func (sub SetSubscription) Status() (*SubscriptionStatus, error) {
 	return &dat, err
 }
 
-func (sub SetSubscription) Cancel() (*SubscriptionCancel, error) {
+func (sub SetSubscription) Cancel(c Client) (*SubscriptionCancel, error) {
 	action := GetSubscriptionCancelRequest{
 		ARBCancelSubscriptionRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SubscriptionID:         sub.Id,
 		},
 	}
@@ -236,7 +236,7 @@ func (sub SetSubscription) Cancel() (*SubscriptionCancel, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat SubscriptionCancel
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -245,10 +245,10 @@ func (sub SetSubscription) Cancel() (*SubscriptionCancel, error) {
 	return &dat, err
 }
 
-func SubscriptionList(search string) (*GetSubscriptionList, error) {
+func (c Client) SubscriptionList(search string) (*GetSubscriptionList, error) {
 	action := GetSubscriptionListRequest{
 		ARBGetSubscriptionListRequest: ARBGetSubscriptionListRequest{
-			MerchantAuthentication: GetAuthentication(),
+			MerchantAuthentication: c.GetAuthentication(),
 			SearchType:             search,
 			Sorting: Sorting{
 				OrderBy:         "id",
@@ -264,7 +264,7 @@ func SubscriptionList(search string) (*GetSubscriptionList, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := SendRequest(jsoned)
+	response, err := c.SendRequest(jsoned)
 	var dat GetSubscriptionList
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
