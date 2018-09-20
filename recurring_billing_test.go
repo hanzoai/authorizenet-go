@@ -30,19 +30,19 @@ func TestCreateSubscription(t *testing.T) {
 		},
 	}
 
-	response, err := subscription.Charge()
+	res, err := subscription.Charge()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
-		newSecondSubscriptionId = response.SubscriptionID
-		newSecondCustomerProfileId = response.CustomerProfileId()
-		t.Log("New Subscription: ", response.SubscriptionID)
-		t.Log("New Customer Profile ID: ", response.CustomerProfileId())
-		t.Log("New Payment Profile ID: ", response.CustomerPaymentProfileId())
+	if res.Approved() {
+		newSecondSubscriptionId = res.SubscriptionID
+		newSecondCustomerProfileId = res.CustomerProfileId()
+		t.Log("New Subscription: ", res.SubscriptionID)
+		t.Log("New Customer Profile ID: ", res.CustomerProfileId())
+		t.Log("New Payment Profile ID: ", res.CustomerPaymentProfileId())
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 	}
 
 }
@@ -95,15 +95,15 @@ func TestUpdateSubscription(t *testing.T) {
 		SubscriptionId: newSubscriptionId,
 	}
 
-	response, err := subscription.Update()
+	res, err := subscription.Update()
 	if err != nil {
 		t.Fail()
 	}
 
-	if response.Approved() {
+	if res.Approved() {
 		t.Log("Updated Subscription \n")
 	} else {
-		t.Log(response.ErrorMessage(), "\n")
+		t.Log(res.ErrorMessage(), "\n")
 		t.Fail()
 	}
 

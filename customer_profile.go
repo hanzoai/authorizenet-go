@@ -24,9 +24,9 @@ func (c *Client) GetPaymentProfileIds(month string, method string) (*GetCustomer
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat GetCustomerPaymentProfileListResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -34,70 +34,70 @@ func (c *Client) GetPaymentProfileIds(month string, method string) (*GetCustomer
 }
 
 func (profile Profile) CreateProfile(c Client) (*CustomProfileResponse, error) {
-	response, err := c.CreateProfile(profile)
-	return response, err
+	res, err := c.CreateProfile(profile)
+	return res, err
 }
 
 func (profile Profile) CreateShipping(c Client) (*CreateCustomerShippingAddressResponse, error) {
-	response, err := c.CreateShipping(profile)
-	return response, err
+	res, err := c.CreateShipping(profile)
+	return res, err
 }
 
 func (customer Customer) Info(c Client) (*GetCustomerProfileResponse, error) {
-	response, err := c.GetProfile(customer)
-	return response, err
+	res, err := c.GetProfile(customer)
+	return res, err
 }
 
 func (customer Customer) Validate(c Client) (*ValidateCustomerPaymentProfileResponse, error) {
-	response, err := c.ValidatePaymentProfile(customer)
-	return response, err
+	res, err := c.ValidatePaymentProfile(customer)
+	return res, err
 }
 
 func (customer Customer) DeleteProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.DeleteProfile(customer)
-	return response, err
+	res, err := c.DeleteProfile(customer)
+	return res, err
 }
 
 func (customer Customer) DeletePaymentProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.DeletePaymentProfile(customer)
-	return response, err
+	res, err := c.DeletePaymentProfile(customer)
+	return res, err
 }
 
 func (customer Customer) DeleteShippingProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.DeleteShippingProfile(customer)
-	return response, err
+	res, err := c.DeleteShippingProfile(customer)
+	return res, err
 }
 
 func (payment CustomerPaymentProfile) Add(c Client) (*CustomerPaymentProfileResponse, error) {
-	response, err := c.CreatePaymentProfile(payment)
-	return response, err
+	res, err := c.CreatePaymentProfile(payment)
+	return res, err
 }
 
-func (response GetCustomerProfileResponse) PaymentProfiles() []GetPaymentProfiles {
-	return response.Profile.PaymentProfiles
+func (res GetCustomerProfileResponse) PaymentProfiles() []GetPaymentProfiles {
+	return res.Profile.PaymentProfiles
 }
 
-func (response GetCustomerProfileResponse) ShippingProfiles() []GetShippingProfiles {
-	return response.Profile.ShippingProfiles
+func (res GetCustomerProfileResponse) ShippingProfiles() []GetShippingProfiles {
+	return res.Profile.ShippingProfiles
 }
 
-func (response GetCustomerProfileResponse) Subscriptions() []string {
-	return response.SubscriptionIds
+func (res GetCustomerProfileResponse) Subscriptions() []string {
+	return res.SubscriptionIds
 }
 
 func (profile Profile) UpdateProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.UpdateProfile(profile)
-	return response, err
+	res, err := c.UpdateProfile(profile)
+	return res, err
 }
 
 func (profile Profile) UpdatePaymentProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.UpdatePaymentProfile(profile)
-	return response, err
+	res, err := c.UpdatePaymentProfile(profile)
+	return res, err
 }
 
 func (profile Profile) UpdateShippingProfile(c Client) (*MessagesResponse, error) {
-	response, err := c.UpdateShippingProfile(profile)
-	return response, err
+	res, err := c.UpdateShippingProfile(profile)
+	return res, err
 }
 
 func (c *Client) GetProfileIds() ([]string, error) {
@@ -110,9 +110,9 @@ func (c *Client) GetProfileIds() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat CustomerProfileIdsResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return []string{}, err
 	}
@@ -132,9 +132,9 @@ func (c *Client) ValidatePaymentProfile(customer Customer) (*ValidateCustomerPay
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat ValidateCustomerPaymentProfileResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -152,9 +152,9 @@ func (c *Client) GetProfile(customer Customer) (*GetCustomerProfileResponse, err
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat GetCustomerProfileResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -174,9 +174,9 @@ func (c *Client) CreateProfile(profile Profile) (*CustomProfileResponse, error) 
 		return nil, err
 	}
 
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat CustomProfileResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -195,9 +195,9 @@ func (c *Client) CreateShipping(profile Profile) (*CreateCustomerShippingAddress
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat CreateCustomerShippingAddressResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -270,9 +270,9 @@ func (c *Client) MessageResponder(d interface{}) (*MessagesResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat MessagesResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -319,9 +319,9 @@ func (c *Client) CreatePaymentProfile(profile CustomerPaymentProfile) (*Customer
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat CustomerPaymentProfileResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}

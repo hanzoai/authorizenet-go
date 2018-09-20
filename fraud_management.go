@@ -6,13 +6,13 @@ import (
 )
 
 func UnsettledBatchList(c Client) (*TransactionsList, error) {
-	response, err := c.SendGetUnsettled()
-	return response, err
+	res, err := c.SendGetUnsettled()
+	return res, err
 }
 
 func (input TransactionsList) List(c Client) ([]BatchTransaction, error) {
-	response, err := c.SendGetUnsettled()
-	return response.Transactions, err
+	res, err := c.SendGetUnsettled()
+	return res.Transactions, err
 }
 
 func updateHeldTransaction() {
@@ -87,9 +87,9 @@ func (c Client) SendTransactionUpdate(tranx PreviousTransaction, method string) 
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat TransactionResponse
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}
@@ -97,13 +97,13 @@ func (c Client) SendTransactionUpdate(tranx PreviousTransaction, method string) 
 }
 
 func (t PreviousTransaction) Approve(c Client) (*TransactionResponse, error) {
-	response, err := c.SendTransactionUpdate(t, "approve")
-	return response, err
+	res, err := c.SendTransactionUpdate(t, "approve")
+	return res, err
 }
 
 func (t PreviousTransaction) Decline(c Client) (*TransactionResponse, error) {
-	response, err := c.SendTransactionUpdate(t, "decline")
-	return response, err
+	res, err := c.SendTransactionUpdate(t, "decline")
+	return res, err
 }
 
 func (c Client) SendGetUnsettled() (*TransactionsList, error) {
@@ -117,9 +117,9 @@ func (c Client) SendGetUnsettled() (*TransactionsList, error) {
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.SendRequest(req)
+	res, err := c.SendRequest(req)
 	var dat TransactionsList
-	err = json.Unmarshal(response, &dat)
+	err = json.Unmarshal(res, &dat)
 	if err != nil {
 		return nil, err
 	}

@@ -103,8 +103,8 @@ newTransaction := authorizenet.NewTransaction{
 			ExpirationDate: "10/23",
 		},
 	}
-response, err := newTransaction.Charge()
-if response.Approved() {
+res, err := newTransaction.Charge()
+if res.Approved() {
 
 }
 ```
@@ -119,8 +119,8 @@ newTransaction := authorizenet.NewTransaction{
 			ExpirationDate: "10/27",
 		},
 	}
-response, err := newTransaction.AuthOnly()
-if response.Approved() {
+res, err := newTransaction.AuthOnly()
+if res.Approved() {
 
 }
 ```
@@ -132,8 +132,8 @@ oldTransaction := authorizenet.PreviousTransaction{
 		Amount: "49.99",
 		RefId:  "AUTHCODEHERE001",
 	}
-response, err := oldTransaction.Capture()
-if response.Approved() {
+res, err := oldTransaction.Capture()
+if res.Approved() {
 
 }
 ```
@@ -149,8 +149,8 @@ newTransaction := authorizenet.NewTransaction{
 		},
 		AuthCode: "YOURAUTHCODE",
 	}
-response, err := newTransaction.Charge()
-if response.Approved() {
+res, err := newTransaction.Charge()
+if res.Approved() {
 
 }
 ```
@@ -166,8 +166,8 @@ newTransaction := authorizenet.NewTransaction{
 		},
 		RefTransId: "0392482938402",
 	}
-response, err := newTransaction.Refund()
-if response.Approved() {
+res, err := newTransaction.Refund()
+if res.Approved() {
 
 }
 ```
@@ -178,8 +178,8 @@ if response.Approved() {
 oldTransaction := authorizenet.PreviousTransaction{
 		RefId: "3987324293834",
 	}
-response, err := oldTransaction.Void()
-if response.Approved() {
+res, err := oldTransaction.Void()
+if res.Approved() {
 
 }
 ```
@@ -202,9 +202,9 @@ newTransaction := authorizenet.NewTransaction{
 		Amount: "35.00",
 	}
 
-response, err := newTransaction.ChargeProfile(customer)
+res, err := newTransaction.ChargeProfile(customer)
 
-if response.Ok() {
+if res.Ok() {
 
 }
 ```
@@ -220,12 +220,12 @@ if response.Ok() {
 
 ## Transaction Responses
 ```go
-response.Ok()                   // bool
-response.Approved()             // bool
-response.Message()              // string
-response.ErrorMessage()         // string
-response.TransactionID()        // string
-response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
+res.Ok()                   // bool
+res.Approved()             // bool
+res.Message()              // string
+res.ErrorMessage()         // string
+res.TransactionID()        // string
+res.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
 ```
 ***
 
@@ -245,10 +245,10 @@ oldTransaction := authorizenet.PreviousTransaction{
 		RefId:  "39824723983",
 	}
 
-	response, err := oldTransaction.Approve()
-	//response := oldTransaction.Decline()
+	res, err := oldTransaction.Approve()
+	//res := oldTransaction.Decline()
 
-	if response.Ok() {
+	if res.Ok() {
 
 	}
 ```
@@ -280,10 +280,10 @@ subscription := authorizenet.Subscription{
 		},
 	}
 
-response, err := subscription.Charge()
+res, err := subscription.Charge()
 
-if response.Approved() {
-    fmt.Println("New Subscription ID: ",response.SubscriptionID)
+if res.Approved() {
+    fmt.Println("New Subscription ID: ",res.SubscriptionID)
 }
 ```
 ###### For Intervals, you can use simple methods
@@ -316,11 +316,11 @@ subscription := authorizenet.Subscription{
 		},
 	}
 
-	response, err := subscription.Charge()
+	res, err := subscription.Charge()
 
-	if response.Approved() {
-		newSubscriptionId = response.SubscriptionID
-		fmt.Println("Customer #",response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
+	if res.Approved() {
+		newSubscriptionId = res.SubscriptionID
+		fmt.Println("Customer #",res.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
 	}
 ```
 ***
@@ -359,9 +359,9 @@ subscription := authorizenet.Subscription{
 		SubscriptionId: newSubscriptionId,
 	}
 
-response, err := subscription.Update()
+res, err := subscription.Update()
 
-if response.Ok() {
+if res.Ok() {
 
 }
 ```
@@ -407,13 +407,13 @@ customer := authorizenet.Profile{
 		},
 	}
 
-	response, err := customer.Create()
+	res, err := customer.Create()
 
-if response.Ok() {
-    fmt.Println("New Customer Profile Created #",response.CustomerProfileID)
-    fmt.Println("New Customer Payment Profile Created #",response.CustomerPaymentProfileID)
+if res.Ok() {
+    fmt.Println("New Customer Profile Created #",res.CustomerProfileID)
+    fmt.Println("New Customer Payment Profile Created #",res.CustomerPaymentProfileID)
 } else {
-       fmt.Println(response.ErrorMessage())
+       fmt.Println(res.ErrorMessage())
    }
 ```
 ***
@@ -448,9 +448,9 @@ customer := authorizenet.Profile{
 		Email:       "info@updatedemail.com",
 	}
 
-	response := customer.Update()
+	res := customer.Update()
 
-if response.Ok() {
+if res.Ok() {
 
 }
 ```
@@ -462,9 +462,9 @@ customer := authorizenet.Customer{
 		ID: "13838",
 	}
 
-	response, err := customer.Delete()
+	res, err := customer.Delete()
 
-if response.Ok() {
+if res.Ok() {
 
 }
 ```
@@ -495,12 +495,12 @@ paymentProfile := authorizenet.CustomerPaymentProfile{
 		},
 	}
 
-response, err := paymentProfile.Add()
+res, err := paymentProfile.Add()
 
-if response.Ok() {
+if res.Ok() {
 
 } else {
-    fmt.Println(response.ErrorMessage())
+    fmt.Println(res.ErrorMessage())
 }
 ```
 ***
@@ -511,9 +511,9 @@ customer := authorizenet.Customer{
 		ID: "3923482487",
 	}
 
-response, err := customer.Info()
+res, err := customer.Info()
 
-paymentProfiles := response.PaymentProfiles()
+paymentProfiles := res.PaymentProfiles()
 ```
 
 :white_check_mark: getCustomerPaymentProfileListRequest
@@ -529,9 +529,9 @@ customerProfile := authorizenet.Customer{
 		PaymentID: "984583934",
 	}
 
-response, err := customerProfile.Validate()
+res, err := customerProfile.Validate()
 
-if response.Ok() {
+if res.Ok() {
 
 }
 ```
@@ -563,12 +563,12 @@ customer := authorizenet.Profile{
 		},
 	}
 
-response, err := customer.UpdatePaymentProfile()
+res, err := customer.UpdatePaymentProfile()
 
-if response.Ok() {
+if res.Ok() {
     fmt.Println("Customer Payment Profile was Updated")
 } else {
-    fmt.Println(response.ErrorMessage())
+    fmt.Println(res.ErrorMessage())
 }
 ```
 ***
@@ -580,12 +580,12 @@ customer := authorizenet.Customer{
 		PaymentID: "98238472349",
 	}
 
-response, err := customer.DeletePaymentProfile()
+res, err := customer.DeletePaymentProfile()
 
-if response.Ok() {
+if res.Ok() {
     fmt.Println("Payment Profile was Deleted")
 } else {
-    fmt.Println(response.ErrorMessage())
+    fmt.Println(res.ErrorMessage())
 }
 ```
 ***
@@ -611,12 +611,12 @@ customer := authorizenet.Profile{
 		},
 	}
 
-response, err := customer.CreateShipping()
+res, err := customer.CreateShipping()
 
-if response.Ok() {
-    fmt.Println("New Shipping Added: #",response.CustomerAddressID)
+if res.Ok() {
+    fmt.Println("New Shipping Added: #",res.CustomerAddressID)
 } else {
-    fmt.Println(response.ErrorMessage())
+    fmt.Println(res.ErrorMessage())
 }
 ```
 ***
@@ -627,9 +627,9 @@ customer := authorizenet.Customer{
 		ID: "3842934233",
 	}
 
-response, err := customer.Info()
+res, err := customer.Info()
 
-shippingProfiles := response.ShippingProfiles()
+shippingProfiles := res.ShippingProfiles()
 
 fmt.Println("Customer Shipping Profiles", shippingProfiles)
 ```
@@ -653,9 +653,9 @@ customer := authorizenet.Profile{
 		},
 	}
 
-response, err := customer.UpdateShippingProfile()
+res, err := customer.UpdateShippingProfile()
 
-if response.Ok() {
+if res.Ok() {
     fmt.Println("Shipping Profile was updated")
 }
 ```
@@ -668,12 +668,12 @@ customer := authorizenet.Customer{
 		ShippingID: "34892734829",
 	}
 
-	response, err := customer.DeleteShippingProfile()
+	res, err := customer.DeleteShippingProfile()
 
-	if response.Ok() {
+	if res.Ok() {
 		fmt.Println("Shipping Profile was Deleted")
 	} else {
-		fmt.Println(response.ErrorMessage())
+		fmt.Println(res.ErrorMessage())
 	}
 ```
 ***
@@ -735,9 +735,9 @@ for _, v := range batches {
 oldTransaction := authorizenet.PreviousTransaction{
 		RefId: "60019493304",
 	}
-response := oldTransaction.Info()
+res := oldTransaction.Info()
 
-fmt.PrintLn("Transaction Status: ",response.TransactionStatus,"\n")
+fmt.PrintLn("Transaction Status: ",res.TransactionStatus,"\n")
 ```
 ***
 
