@@ -10,7 +10,7 @@ func TestGetUnsettledTransactions(t *testing.T) {
 		t.Fail()
 	}
 
-	t.Log("Count Unsettled: ", transactions.Count)
+	t.Log("Count Unsettled: ", transactions.Count())
 	t.Log(transactions.List(client))
 }
 
