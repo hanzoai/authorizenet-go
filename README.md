@@ -2,6 +2,8 @@
 
 # Authorize.net CIM, AIM, and ARB for Go Language
 
+[![Open in Hanzo](https://hanzo.app/badges/open-in-hanzo.svg)](https://hanzo.app/dev/open?repo=github.com/hanzoai/authorizenet-go&ref=main&action=open) [![Edit with Hanzo](https://hanzo.app/badges/edit-with-hanzo.svg)](https://hanzo.app/dev/open?repo=github.com/hanzoai/authorizenet-go&ref=main&action=edit)
+
 [![Build Status](https://travis-ci.org/hanzoai/authorizenet.svg?branch=master)](https://travis-ci.org/hanzoai/authorizenet)  [![Code Climate](https://lima.codeclimate.com/github/hanzoai/authorizenet/badges/gpa.svg)](https://lima.codeclimate.com/github/hanzoai/authorizenet) [![Coverage Status](https://coveralls.io/repos/github/hanzoai/authorizenet/badge.svg?branch=master)](https://coveralls.io/github/hanzoai/authorizenet?branch=master) [![GoDoc](https://godoc.org/github.com/hanzoai/authorizenet?status.svg)](https://godoc.org/github.com/hanzoai/authorizenet) [![Go Report Card](https://goreportcard.com/badge/github.com/hanzoai/authorizenet)](https://goreportcard.com/report/github.com/hanzoai/authorizenet)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM, AIM, and ARB API.
